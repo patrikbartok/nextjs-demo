@@ -9,6 +9,7 @@ export const users = pgTable("users", {
 });
 export const usersRelations = relations(users, ({ many }) => ({
   posts: many(posts),
+  likedPosts: many(likedPosts)
 }));
 export type User = InferSelectModel<typeof users>;
 export type UserWithPosts = User & { posts: Post[] };
@@ -24,5 +25,20 @@ export const postsRelations = relations(posts, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const likedPosts = pgTable("liked_posts", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  postId: integer("post_id").notNull(),
+});
+
+export const likedPostsRelations = relations(likedPosts, ({ one, many }) => ({
+  user: one(users, {
+    fields: [likedPosts.userId],
+    references: [users.id],
+  }),
+  likedPosts: many(posts),
+}));
+
 export type Post = InferSelectModel<typeof posts>;
 export type PostWithAuthor = Post & { author: User };
