@@ -1,4 +1,4 @@
-import { posts, users } from "./schema";
+import { likedPosts, posts, users } from "./schema";
 import { faker } from "@faker-js/faker";
 import { db } from ".";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
@@ -23,6 +23,13 @@ if (!user) {
       userId: Math.floor(Math.random() * NUMBER_OF_USERS) + 1,
       content: faker.lorem.text(),
     });
+  }
+
+  for (let i=1; i<3; i++) {
+    await db.insert(likedPosts).values({
+      userId: 1,
+      postId: i,
+    })
   }
 }
 
