@@ -10,12 +10,16 @@ export const Header: FC<HeaderProps> = ({ style = {}, ...props }) => {
     error,
     data: user
   } = useQuery<User>({
-    queryKey: ['user'],
+    queryKey: ['users', 1],
     queryFn: () => fetch('/api/users/1').then((r) => r.json())
   })
 
-  if (isLoading || error || !user) {
+  if (isLoading || !user) {
     return null
+  }
+
+  if (error) {
+    throw new Error('User not found')
   }
 
   return (
