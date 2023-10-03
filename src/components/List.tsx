@@ -1,10 +1,29 @@
-import { ComponentPropsWithoutRef, FC, ReactNode } from 'react'
+import { ComponentPropsWithoutRef, FC } from 'react'
 import { gray } from '~/designSystem'
+import { Card } from '~/components/Card'
+import { useQuery } from '@tanstack/react-query'
+import { PostWithAuthor } from '~/db/schema'
+import { Loading } from '~/dashboard/Loading'
 
-type ListProps = {
-  children: ReactNode
-} & ComponentPropsWithoutRef<'div'>
-export const List: FC<ListProps> = ({ children, style = {}, ...props }) => {
+type ListProps = ComponentPropsWithoutRef<'div'>
+export const List: FC<ListProps> = ({ style = {}, ...props }) => {
+  const { isLoading, error, data } = useQuery<PostWithAuthor[]>({
+    queryKey: ['posts'],
+    queryFn: () => fetch('/api/posts').then((r) => r.json())
+  })
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (error) {
+    throw new Error('An error occurred while fetching posts')
+  }
+
+  if (!data) {
+    return null
+  }
+
   return (
     <div
       style={{
@@ -23,7 +42,13 @@ export const List: FC<ListProps> = ({ children, style = {}, ...props }) => {
       }}
       {...props}
     >
-      {children}
+      {data.map((post) => {
+        return (
+          <Card key={post.id} title={post.author.name ?? ''}>
+            {post.content}
+          </Card>
+        )
+      })}
     </div>
   )
 }
