@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ComponentPropsWithoutRef, FC } from 'react'
 import { User } from '~/db/schema'
 import { gray } from '~/designSystem'
+import { Loading } from '~/dashboard/Loading'
 
 type HeaderProps = ComponentPropsWithoutRef<'div'>
 export const Header: FC<HeaderProps> = ({ style = {}, ...props }) => {
@@ -14,12 +15,16 @@ export const Header: FC<HeaderProps> = ({ style = {}, ...props }) => {
     queryFn: () => fetch('/api/users/1').then((r) => r.json())
   })
 
-  if (isLoading || !user) {
-    return null
+  if (isLoading) {
+    return <Loading />
   }
 
   if (error) {
     throw new Error('User not found')
+  }
+
+  if (!user) {
+    return null
   }
 
   return (
