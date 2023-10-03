@@ -2,22 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import { ComponentPropsWithoutRef, FC } from 'react'
 import { User } from '~/db/schema'
 import { gray } from '~/designSystem'
-import { Loading } from '~/dashboard/Loading'
 
 type HeaderProps = ComponentPropsWithoutRef<'div'>
 export const Header: FC<HeaderProps> = ({ style = {}, ...props }) => {
-  const {
-    isLoading,
-    error,
-    data: user
-  } = useQuery<User>({
+  const { error, data: user } = useQuery<User>({
     queryKey: ['users', 1],
-    queryFn: () => fetch('/api/users/1').then((r) => r.json())
+    queryFn: () => fetch('http://localhost:3000/api/users/1').then((r) => r.json())
   })
-
-  if (isLoading) {
-    return <Loading />
-  }
 
   if (error) {
     throw new Error('User not found')

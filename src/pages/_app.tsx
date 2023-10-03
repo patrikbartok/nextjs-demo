@@ -2,9 +2,10 @@ import '~/reset.css'
 import { DefaultOptions, Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import { Inter } from 'next/font/google'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 import { ErrorBoundaryFallback } from '~/dashboard/ErrorBoundaryFallback'
+import { Loading } from '~/dashboard/Loading'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,7 +14,8 @@ const App = ({ Component, pageProps }: AppProps) => {
     queries: {
       //useErrorBoundary: true,
       refetchOnWindowFocus: false,
-      retry: false
+      retry: false,
+      suspense: true
     }
   }
 
@@ -24,7 +26,9 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Hydrate state={pageProps.dehydratedState}>
         <main className={inter.className}>
           <ErrorBoundary errorComponent={ErrorBoundaryFallback}>
-            <Component {...pageProps} />
+            <Suspense fallback={<Loading />}>
+              <Component {...pageProps} />
+            </Suspense>
           </ErrorBoundary>
         </main>
       </Hydrate>
