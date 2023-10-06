@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, FC } from 'react'
 import { gray } from '~/designSystem'
-import { Card } from '~/components/Card'
+import { Card } from '~/components/posts/Card'
 import { useQuery } from '@tanstack/react-query'
 import { PostWithAuthor } from '~/db/schema'
 

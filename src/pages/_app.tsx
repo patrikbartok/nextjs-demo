@@ -12,10 +12,8 @@ const inter = Inter({ subsets: ['latin'] })
 const App = ({ Component, pageProps }: AppProps) => {
   const queryConfig: DefaultOptions = {
     queries: {
-      //useErrorBoundary: true,
       refetchOnWindowFocus: false,
-      retry: false,
-      suspense: true
+      retry: false
     }
   }
 

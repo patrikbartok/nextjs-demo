@@ -9,10 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<User>) => {
   const userIdNum = Number(userId)
 
   const user = await db.query.users.findFirst({
-    where: eq(users.id, userIdNum),
-    with: {
-      likedPosts: true
-    }
+    where: eq(users.id, userIdNum)
   })
   if (!user) {
     throw new Error('Invalid user')

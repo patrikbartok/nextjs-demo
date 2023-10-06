@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, FC, useState } from 'react'
 
 type LikeProps = ComponentPropsWithoutRef<'div'>
 export const Like: FC<LikeProps> = ({ style = {}, ...props }) => {
-  const [active, setActive] = useState(Math.random() > 0.8)
+  const [active, setActive] = useState(false)
 
   return (
     <div style={{ color: 'white', ...style }} {...props}>
