@@ -5,7 +5,8 @@
     "prepublishOnly": "",
     "generate": "drizzle-kit generate:pg",
     "migrate": "tsx src/db/migrate.ts",
-    "dev": "npm run generate && npm run migrate & next dev"
+    "dev": "npm run generate && npm run migrate & next dev",
+    "production": "npm run generate && npm run migrate & next build && next start"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.35.3",

@@ -1,4 +1,4 @@
-import { likedPosts, posts, users } from './schema'
+import { likes, posts, users } from './schema'
 import { faker } from '@faker-js/faker'
 import { db } from '.'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
@@ -25,8 +25,8 @@ if (!user) {
     })
   }
 
-  for (let i = 1; i < 3; i++) {
-    await db.insert(likedPosts).values({
+  for (let i = 1; i <= 5; i++) {
+    await db.insert(likes).values({
       userId: 1,
       postId: i
     })
