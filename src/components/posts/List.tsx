@@ -4,11 +4,14 @@ import { Card } from '~/components/posts/Card'
 import { useQuery } from '@tanstack/react-query'
 import { PostWithAuthor } from '~/db/schema'
 
-type ListProps = ComponentPropsWithoutRef<'div'>
+type ListProps = {
+  queryKey: Array<any>
+  api: string
+} & ComponentPropsWithoutRef<'div'>
 export const List: FC<ListProps> = ({ ...props }) => {
   const { error, data } = useQuery<PostWithAuthor[]>({
-    queryKey: ['posts'],
-    queryFn: () => fetch('http://localhost:3000/api/posts').then((r) => r.json())
+    queryKey: [props.queryKey],
+    queryFn: () => fetch(props.api).then((r) => r.json())
   })
 
   if (error) {

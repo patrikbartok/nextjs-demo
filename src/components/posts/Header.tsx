@@ -5,11 +5,14 @@ import { gray } from '~/designSystem'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-type HeaderProps = ComponentPropsWithoutRef<'div'>
+type HeaderProps = {
+  queryKey: Array<any>
+  api: string
+} & ComponentPropsWithoutRef<'div'>
 export const Header: FC<HeaderProps> = ({ ...props }) => {
   const { error, data: user } = useQuery<User>({
     queryKey: ['users', 1],
-    queryFn: () => fetch('http://localhost:3000/api/users/1').then((r) => r.json())
+    queryFn: () => fetch(props.api).then((r) => r.json())
   })
 
   const router = useRouter()

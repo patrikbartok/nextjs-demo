@@ -2,13 +2,21 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { List } from '~/components/posts/List'
 import { NextPageWithLayout } from '~/pages/_app'
 import { ReactElement } from 'react'
-import { PostsLayout } from '~/components/posts/PostsLayout'
+import { Header } from '~/components/posts/Header'
+
+const userId: number = 1
+
+const userQueryKey = ['users', userId]
+const userApi: string = `http://localhost:3000/api/users/${userId}`
+
+const likedPostQueryKey = ['users', userId, 'likedPosts']
+const likedPostsApi: string = `http://localhost:3000/api/users/${userId}/likedPosts`
 
 export async function getServerSideProps() {
   const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery(['users', 1], () => fetch('http://localhost:3000/api/users/1').then((r) => r.json()))
-  await queryClient.prefetchQuery(['posts'], () => fetch('http://localhost:3000/api/posts').then((r) => r.json()))
+  await queryClient.prefetchQuery(userQueryKey, () => fetch(userApi).then((r) => r.json()))
+  await queryClient.prefetchQuery(likedPostQueryKey, () => fetch(likedPostsApi).then((r) => r.json()))
 
   return {
     props: {
@@ -18,11 +26,16 @@ export async function getServerSideProps() {
 }
 
 const FavouritePosts: NextPageWithLayout = () => {
-  return <List />
+  return <List queryKey={likedPostQueryKey} api={likedPostsApi} />
 }
 
 FavouritePosts.getLayout = function getLayout(page: ReactElement) {
-  return <PostsLayout>{page}</PostsLayout>
+  return (
+    <>
+      <Header queryKey={userQueryKey} api={userApi} />
+      {page}
+    </>
+  )
 }
 
 export default FavouritePosts
