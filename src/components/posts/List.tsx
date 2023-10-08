@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { PostWithAuthor } from '~/db/schema'
 
 type ListProps = ComponentPropsWithoutRef<'div'>
-export const List: FC<ListProps> = ({ style = {}, ...props }) => {
+export const List: FC<ListProps> = ({ ...props }) => {
   const { error, data } = useQuery<PostWithAuthor[]>({
     queryKey: ['posts'],
     queryFn: () => fetch('http://localhost:3000/api/posts').then((r) => r.json())
@@ -28,12 +28,12 @@ export const List: FC<ListProps> = ({ style = {}, ...props }) => {
         background: gray[50],
         padding: 50,
         width: 700,
+        marginTop: -200,
         maxWidth: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
         borderRadius: 20,
-        border: `1px solid ${gray[100]}`,
-        ...style
+        border: `1px solid ${gray[100]}`
       }}
       {...props}
     >
