@@ -1,4 +1,23 @@
 export const Loading = () => {
-  // You can add any UI inside Loading, including a Skeleton.
-  return <div>LOADING SUSPENSE FALLBACK TODO</div>
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh'
+      }}
+    >
+      <div
+        style={{
+          border: '6px solid #f3f3f3',
+          borderTop: '6px solid #3498db',
+          borderRadius: '50%',
+          width: '50px',
+          height: '50px',
+          animation: 'spin 2s linear infinite'
+        }}
+      ></div>
+    </div>
+  )
 }

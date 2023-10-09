@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '~/db'
-import { likes, Post } from '~/db/schema'
+import { Post, seenPosts } from '~/db/schema'
 
 export default async (req: NextApiRequest, res: NextApiResponse<Post[]>) => {
   const { userId } = req.query || 0
@@ -18,17 +18,15 @@ export default async (req: NextApiRequest, res: NextApiResponse<Post[]>) => {
     throw new Error('Posts query failed')
   }
 
-  const userLikes = await db.query.likes.findMany({
-    where: eq(likes.userId, userIdNum)
+  const seenPostsQuery = await db.query.seenPosts.findMany({
+    where: eq(seenPosts.userId, userIdNum)
   })
 
-  if (!userLikes) {
-    throw new Error('User likes query failed')
+  if (!seenPostsQuery) {
+    throw new Error('User unseen posts query failed')
   }
 
-  const unseensPosts = posts.filter((post) => !userLikes.some((like) => like.postId === post.id))
-
-  console.log(unseensPosts)
+  const unseensPosts = posts.filter((post) => !seenPostsQuery.some((like) => like.postId === post.id))
 
   res.json(unseensPosts)
 }
