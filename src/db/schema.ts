@@ -6,7 +6,8 @@ export const users = pgTable('users', {
   name: text('name')
 })
 export const usersRelations = relations(users, ({ many }) => ({
-  posts: many(posts)
+  posts: many(posts),
+  likes: many(likes)
 }))
 export type User = InferSelectModel<typeof users>
 export type UserWithPosts = User & { posts: Post[] }
