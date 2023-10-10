@@ -1,19 +1,12 @@
-import { useQuery } from '@tanstack/react-query'
 import { ComponentPropsWithoutRef, FC } from 'react'
-import { User } from '~/db/schema'
 import { gray } from '~/designSystem'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useLoggedUser } from '~/components/posts/api/getLoggedUser'
 
-type HeaderProps = {
-  queryKey: Array<any>
-  api: string
-} & ComponentPropsWithoutRef<'div'>
+type HeaderProps = ComponentPropsWithoutRef<'div'>
 export const Header: FC<HeaderProps> = ({ ...props }) => {
-  const { error, data: user } = useQuery<User>({
-    queryKey: ['users', 1],
-    queryFn: () => fetch(props.api).then((r) => r.json())
-  })
+  const { error, data: user } = useLoggedUser()
 
   const router = useRouter()
 
@@ -40,12 +33,12 @@ export const Header: FC<HeaderProps> = ({ ...props }) => {
       >
         <h1 style={{ color: gray[200], fontSize: 24, textAlign: 'left', margin: 0 }}>ICF Social</h1>
         <div style={{ display: 'flex', gap: '10px', flexGrow: 1, justifyContent: 'left' }}>
-          <Link href='/posts' style={{ textDecoration: 'none' }}>
+          <Link href='/unseen-posts' style={{ textDecoration: 'none' }}>
             <div
               style={{
                 padding: '10px 20px',
                 background: gray[600],
-                color: router.pathname == '/posts' ? 'yellow' : 'white',
+                color: router.pathname == '/unseen-posts' ? 'yellow' : 'white',
                 textDecoration: 'none',
                 borderRadius: '5px',
                 transition: 'background 0.3s ease',
@@ -57,12 +50,12 @@ export const Header: FC<HeaderProps> = ({ ...props }) => {
               Home
             </div>
           </Link>
-          <Link href='/favourites' style={{ textDecoration: 'none' }}>
+          <Link href='/liked-posts' style={{ textDecoration: 'none' }}>
             <div
               style={{
                 padding: '10px 20px',
                 background: gray[600],
-                color: router.pathname == '/favourites' ? 'yellow' : 'white',
+                color: router.pathname == '/liked-posts' ? 'yellow' : 'white',
                 textDecoration: 'none',
                 borderRadius: '5px',
                 transition: 'background 0.3s ease',

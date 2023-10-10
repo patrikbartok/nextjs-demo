@@ -11,7 +11,7 @@ const Home = () => {
         height: '70vh' // This makes the container take the full viewport height
       }}
     >
-      <Link href='/posts' style={{ textDecoration: 'none' }}>
+      <Link href='/unseen-posts' style={{ textDecoration: 'none' }}>
         <div
           style={{
             padding: '10px 20px',

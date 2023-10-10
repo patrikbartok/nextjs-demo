@@ -10,6 +10,8 @@ import { NextPage } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const userId: number = 1
+
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const queryConfig: DefaultOptions = {
     queries: {
