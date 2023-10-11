@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Like, PostWithAuthorAndLikedStatus } from '~/db/schema'
 import { listedPostsQueryKey } from '../get-listed-posts'
-import { useRouter } from 'next/router'
 
-export const removeLike = (like: Like): Promise<Response> => {
-  return fetch('/api/remove-like', {
+export const addLike = async (like: Like): Promise<Response> => {
+  const response = await fetch('/api/add-like', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -13,17 +12,15 @@ export const removeLike = (like: Like): Promise<Response> => {
       userId: like.userId,
       postId: like.postId
     })
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error('Failed to remove like')
-    }
-    return response
   })
+  if (!response.ok) {
+    throw new Error('Failed to add like')
+  }
+  return response
 }
 
-export const useRemoveLike = () => {
+export const useAddLike = () => {
   const queryClient = useQueryClient()
-  const router = useRouter()
 
   return useMutation({
     onMutate: async (newLike: Like) => {
@@ -35,7 +32,7 @@ export const useRemoveLike = () => {
         if (post.id === newLike.postId) {
           return {
             ...post,
-            liked: false
+            liked: true
           }
         }
         return post
@@ -50,11 +47,6 @@ export const useRemoveLike = () => {
         queryClient.setQueryData(listedPostsQueryKey, context.previousListedPosts)
       }
     },
-    onSuccess: () => {
-      if (router.pathname === '/liked-posts') {
-        queryClient.invalidateQueries(listedPostsQueryKey) //so it disappears when removing like on favourites page
-      }
-    },
-    mutationFn: removeLike
+    mutationFn: addLike
   })
 }

@@ -71,4 +71,4 @@ export const seenPostsRelations = relations(seenPosts, ({ one }) => ({
     references: [posts.id]
   })
 }))
-export type seenPost = InferSelectModel<typeof seenPosts>
+export type SeenPost = InferSelectModel<typeof seenPosts>

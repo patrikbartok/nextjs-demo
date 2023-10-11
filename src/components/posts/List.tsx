@@ -4,9 +4,11 @@ import { Card } from '~/components/posts/Card'
 import { PostWithAuthorAndLikedStatus } from '~/db/schema'
 
 type ListProps = {
+  handleLike: (post: PostWithAuthorAndLikedStatus) => void
+  markSeen: (post: PostWithAuthorAndLikedStatus) => Promise<boolean>
   posts: PostWithAuthorAndLikedStatus[]
 } & ComponentPropsWithoutRef<'div'>
-export const List: FC<ListProps> = ({ posts, ...props }) => {
+export const List: FC<ListProps> = ({ posts, handleLike, markSeen, ...props }) => {
   return (
     <div
       style={{
@@ -26,7 +28,7 @@ export const List: FC<ListProps> = ({ posts, ...props }) => {
       {...props}
     >
       {posts.map((post) => (
-        <Card key={post.id} post={post} />
+        <Card key={post.id} post={post} handleLike={handleLike} markSeen={markSeen} />
       ))}
     </div>
   )

@@ -1,31 +1,36 @@
-import { ComponentPropsWithoutRef, FC } from 'react'
+import { ComponentPropsWithoutRef, FC, useEffect, useRef } from 'react'
 import { gray } from '~/designSystem'
-import { Like, PostWithAuthorAndLikedStatus } from '~/db/schema'
-import { useAddLike } from '~/components/posts/api/like/add-like'
-import { loggedUserId } from '~/config'
-import { useRemoveLike } from '~/components/posts/api/like/remove-like'
+import { PostWithAuthorAndLikedStatus } from '~/db/schema'
+import useOnScreen from '~/helpers/use-on-screen'
 
 type CardProps = {
+  handleLike: (post: PostWithAuthorAndLikedStatus) => void
+  markSeen: (post: PostWithAuthorAndLikedStatus) => Promise<boolean>
   post: PostWithAuthorAndLikedStatus
 } & ComponentPropsWithoutRef<'div'>
-export const Card: FC<CardProps> = ({ post, style = {}, ...props }) => {
-  const addLikeMutation = useAddLike()
-  const removeLikeMutation = useRemoveLike()
+export const Card: FC<CardProps> = ({ post, handleLike, markSeen, style = {}, ...props }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const isVisible = useOnScreen(ref)
 
-  const handleLikeClick = () => {
-    const like: Like = {
-      userId: loggedUserId,
-      postId: post.id
-    }
-    if (post.liked) {
-      removeLikeMutation.mutate(like)
-    } else {
-      addLikeMutation.mutate(like)
-    }
+  const markedAsSeen = useRef(false)
+
+  const handleOnLikeClick = () => {
+    handleLike(post)
   }
+
+  useEffect(() => {
+    if (isVisible && !markedAsSeen.current) {
+      const timeoutId = setTimeout(async () => {
+        markedAsSeen.current = await markSeen(post)
+      }, 5000)
+
+      return () => clearTimeout(timeoutId)
+    }
+  }, [isVisible])
 
   return (
     <div
+      ref={ref}
       style={{
         width: 600,
         maxWidth: '100%',
@@ -43,7 +48,7 @@ export const Card: FC<CardProps> = ({ post, style = {}, ...props }) => {
         <div style={{ color: 'white', ...style }} {...props}>
           <button
             style={{ cursor: 'pointer', border: 'none', background: 'none', color: 'red' }}
-            onClick={handleLikeClick}
+            onClick={handleOnLikeClick}
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
