@@ -4,9 +4,9 @@ import { Card } from '~/components/posts/Card'
 import { PostWithAuthorAndLikedStatus } from '~/db/schema'
 
 type ListProps = {
+  posts: PostWithAuthorAndLikedStatus[]
   handleLike: (post: PostWithAuthorAndLikedStatus) => void
   markSeen: (post: PostWithAuthorAndLikedStatus) => Promise<boolean>
-  posts: PostWithAuthorAndLikedStatus[]
 } & ComponentPropsWithoutRef<'div'>
 export const List: FC<ListProps> = ({ posts, handleLike, markSeen, ...props }) => {
   return (

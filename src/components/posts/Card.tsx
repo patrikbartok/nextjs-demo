@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, FC, useEffect, useRef } from 'react'
 import { gray } from '~/designSystem'
 import { PostWithAuthorAndLikedStatus } from '~/db/schema'
-import useOnScreen from '~/helpers/use-on-screen'
+import useOnScreen from '~/hooks/use-on-screen'
 
 type CardProps = {
   handleLike: (post: PostWithAuthorAndLikedStatus) => void
@@ -48,6 +48,7 @@ export const Card: FC<CardProps> = ({ post, handleLike, markSeen, style = {}, ..
         <div style={{ color: 'white', ...style }} {...props}>
           <button
             style={{ cursor: 'pointer', border: 'none', background: 'none', color: 'red' }}
+            aria-label='Like Button'
             onClick={handleOnLikeClick}
           >
             <svg

@@ -1,8 +1,11 @@
 'use client' // ErrorBoundaryFallback components must be Client Components
 
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 export const ErrorBoundaryFallback = ({ error, reset }: { error: Error; reset: () => void }) => {
+  const router = useRouter()
+
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error)
@@ -20,24 +23,39 @@ export const ErrorBoundaryFallback = ({ error, reset }: { error: Error; reset: (
       }}
     >
       <h2>{error.message}</h2>
-      <button
-        style={{
-          marginTop: '20px',
-          padding: '10px 20px',
-          fontSize: '16px',
-          backgroundColor: '#007bff',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
+      <div style={{ marginTop: '20px' }}>
+        <button
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            backgroundColor: '#007bff',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            marginRight: '10px', // Add some spacing
+            cursor: 'pointer'
+          }}
+          onClick={() => {
+            router.push('/')
+          }}
+        >
+          Home
+        </button>
+        <button
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            backgroundColor: '#007bff',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+          onClick={() => reset()}
+        >
+          Try again
+        </button>
+      </div>
     </div>
   )
 }
