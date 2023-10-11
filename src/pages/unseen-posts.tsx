@@ -5,7 +5,7 @@ import { ReactElement } from 'react'
 import { Header } from '~/components/user/Header'
 import { prefetchListedPostsQuery, useListedPosts } from '~/components/posts/api/get-listed-posts'
 import { prefetchLoggedUser } from '~/components/user/api/get-logged-user'
-import { Like, PostWithAuthorAndLikedStatus } from '~/db/schema'
+import { Like, PostWithStatusInfo } from '~/db/schema'
 import { loggedUserId } from '~/config'
 import { useAddLike } from '~/components/posts/api/mutations/add-like'
 import { useRemoveLike } from '~/components/posts/api/mutations/remove-like'
@@ -30,7 +30,7 @@ const UnseenPosts: NextPageWithLayout = () => {
   const removeLikeMutation = useRemoveLike()
   const markSeenMutation = useAddSeen()
 
-  const handleLike = (post: PostWithAuthorAndLikedStatus) => {
+  const handleLike = (post: PostWithStatusInfo) => {
     const like: Like = {
       userId: loggedUserId,
       postId: post.id
@@ -42,13 +42,12 @@ const UnseenPosts: NextPageWithLayout = () => {
     }
   }
 
-  const markSeen = async (post: PostWithAuthorAndLikedStatus): Promise<boolean> => {
+  const markSeen = (post: PostWithStatusInfo) => {
     const seen: Like = {
       userId: loggedUserId,
       postId: post.id
     }
-    const { ok } = await markSeenMutation.mutateAsync(seen)
-    return ok
+    markSeenMutation.mutate(seen)
   }
 
   if (unseenPostsError) {

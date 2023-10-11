@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Like, PostWithAuthorAndLikedStatus } from '~/db/schema'
+import { Like, PostWithStatusInfo } from '~/db/schema'
 import { listedPostsQueryKey } from '../get-listed-posts'
 
 export const removeLike = async (like: Like): Promise<Response> => {
@@ -26,7 +26,7 @@ export const useRemoveLikedPost = () => {
     onMutate: async (like: Like) => {
       await queryClient.cancelQueries(listedPostsQueryKey)
 
-      const previousListedPosts = queryClient.getQueryData<PostWithAuthorAndLikedStatus[]>(listedPostsQueryKey)
+      const previousListedPosts = queryClient.getQueryData<PostWithStatusInfo[]>(listedPostsQueryKey)
 
       const updatedListedPosts = previousListedPosts?.filter((post) => post.id !== like.postId)
 

@@ -10,7 +10,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   likes: many(likes)
 }))
 export type User = InferSelectModel<typeof users>
-export type UserWithPosts = User & { posts: Post[] }
+export type UserWithPosts = User & { posts: PostData[] }
 
 export const posts = pgTable('posts', {
   id: serial('id').primaryKey(),
@@ -23,9 +23,9 @@ export const postsRelations = relations(posts, ({ one }) => ({
     references: [users.id]
   })
 }))
-export type Post = InferSelectModel<typeof posts>
-export type PostWithAuthor = Post & { author: User }
-export type PostWithAuthorAndLikedStatus = PostWithAuthor & { liked: boolean }
+export type PostData = InferSelectModel<typeof posts>
+export type PostWithAuthorInfo = PostData & { author: User }
+export type PostWithStatusInfo = PostWithAuthorInfo & { liked: boolean; seen: boolean }
 
 export const likes = pgTable(
   'likes',

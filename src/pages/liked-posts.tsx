@@ -5,7 +5,7 @@ import { Header } from '~/components/user/Header'
 import { List } from '~/components/posts/List'
 import { prefetchListedPostsQuery, useListedPosts } from '~/components/posts/api/get-listed-posts'
 import { prefetchLoggedUser } from '~/components/user/api/get-logged-user'
-import { Like, PostWithAuthorAndLikedStatus } from '~/db/schema'
+import { Like, PostWithStatusInfo } from '~/db/schema'
 import { loggedUserId } from '~/config'
 import { useRemoveLikedPost } from '~/components/posts/api/mutations/remove-liked-post'
 
@@ -26,7 +26,7 @@ const LikedPosts: NextPageWithLayout = () => {
   const { error: likedPostsError, data: likedPosts } = useListedPosts('Liked')
   const removeLikedPostMutation = useRemoveLikedPost()
 
-  const handleLike = (post: PostWithAuthorAndLikedStatus) => {
+  const handleLike = (post: PostWithStatusInfo) => {
     const like: Like = {
       userId: loggedUserId,
       postId: post.id
@@ -34,8 +34,9 @@ const LikedPosts: NextPageWithLayout = () => {
     removeLikedPostMutation.mutate(like)
   }
 
-  const markSeen = async () => {
-    return true
+  const markSeen = () => {
+    console.log('hi')
+    return null
   }
 
   if (likedPostsError) {

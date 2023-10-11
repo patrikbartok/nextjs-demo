@@ -1,27 +1,25 @@
 import { ComponentPropsWithoutRef, FC, useEffect, useRef } from 'react'
 import { gray } from '~/designSystem'
-import { PostWithAuthorAndLikedStatus } from '~/db/schema'
+import { PostWithStatusInfo } from '~/db/schema'
 import useOnScreen from '~/hooks/use-on-screen'
 
 type CardProps = {
-  handleLike: (post: PostWithAuthorAndLikedStatus) => void
-  markSeen: (post: PostWithAuthorAndLikedStatus) => Promise<boolean>
-  post: PostWithAuthorAndLikedStatus
+  handleLike: (post: PostWithStatusInfo) => void
+  markSeen: (post: PostWithStatusInfo) => void
+  post: PostWithStatusInfo
 } & ComponentPropsWithoutRef<'div'>
 export const Card: FC<CardProps> = ({ post, handleLike, markSeen, style = {}, ...props }) => {
   const ref = useRef<HTMLDivElement>(null)
   const isVisible = useOnScreen(ref)
-
-  const markedAsSeen = useRef(false)
 
   const handleOnLikeClick = () => {
     handleLike(post)
   }
 
   useEffect(() => {
-    if (isVisible && !markedAsSeen.current) {
+    if (isVisible && !post.seen) {
       const timeoutId = setTimeout(async () => {
-        markedAsSeen.current = await markSeen(post)
+        markSeen(post)
       }, 5000)
 
       return () => clearTimeout(timeoutId)

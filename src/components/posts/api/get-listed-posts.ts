@@ -1,5 +1,5 @@
 import { QueryClient, useQuery } from '@tanstack/react-query'
-import { PostWithAuthorAndLikedStatus } from '~/db/schema'
+import { PostWithStatusInfo } from '~/db/schema'
 import { loggedUserId } from '~/config'
 
 export const listedPostsQueryKey = ['users', loggedUserId, 'unseen-posts']
@@ -10,7 +10,7 @@ export const ListedPostsApi = {
 }
 
 export const useListedPosts = (postsApi: keyof typeof ListedPostsApi) => {
-  return useQuery<PostWithAuthorAndLikedStatus[]>({
+  return useQuery<PostWithStatusInfo[]>({
     queryKey: listedPostsQueryKey,
     queryFn: () => fetch(ListedPostsApi[postsApi]).then((r) => r.json())
   })

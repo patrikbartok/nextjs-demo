@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '~/db'
-import { likes, PostWithAuthorAndLikedStatus, seenPosts } from '~/db/schema'
+import { likes, PostWithStatusInfo, seenPosts } from '~/db/schema'
 
-export default async (req: NextApiRequest, res: NextApiResponse<PostWithAuthorAndLikedStatus[]>) => {
+export default async (req: NextApiRequest, res: NextApiResponse<PostWithStatusInfo[]>) => {
   const { userId } = req.query || 0
 
   const userIdNum = Number(userId)
@@ -32,10 +32,11 @@ export default async (req: NextApiRequest, res: NextApiResponse<PostWithAuthorAn
 
   const unseenPosts = posts.filter((post) => !seenPostsQuery.some((like) => like.postId === post.id))
 
-  const unseenPostsWithLikedStatus = unseenPosts.map((post) => ({
+  const unseenPostsWithStatusInfo = unseenPosts.map((post) => ({
     ...post,
-    liked: userLikes.some((like) => like.postId === post.id)
+    liked: userLikes.some((like) => like.postId === post.id),
+    seen: false
   }))
 
-  res.json(unseenPostsWithLikedStatus)
+  res.json(unseenPostsWithStatusInfo)
 }

@@ -1,12 +1,12 @@
 import { ComponentPropsWithoutRef, FC } from 'react'
 import { gray } from '~/designSystem'
 import { Card } from '~/components/posts/Card'
-import { PostWithAuthorAndLikedStatus } from '~/db/schema'
+import { PostWithStatusInfo } from '~/db/schema'
 
 type ListProps = {
-  posts: PostWithAuthorAndLikedStatus[]
-  handleLike: (post: PostWithAuthorAndLikedStatus) => void
-  markSeen: (post: PostWithAuthorAndLikedStatus) => Promise<boolean>
+  posts: PostWithStatusInfo[]
+  handleLike: (post: PostWithStatusInfo) => void
+  markSeen: (post: PostWithStatusInfo) => void
 } & ComponentPropsWithoutRef<'div'>
 export const List: FC<ListProps> = ({ posts, handleLike, markSeen, ...props }) => {
   return (
