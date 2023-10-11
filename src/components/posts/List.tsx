@@ -1,20 +1,12 @@
 import { ComponentPropsWithoutRef, FC } from 'react'
 import { gray } from '~/designSystem'
 import { Card } from '~/components/posts/Card'
-import { useLikedPosts } from '~/components/posts/api/getLikedPosts'
+import { PostWithAuthorAndLikedStatus } from '~/db/schema'
 
-type ListProps = ComponentPropsWithoutRef<'div'>
-export const LikedList: FC<ListProps> = ({ ...props }) => {
-  const { error, data } = useLikedPosts()
-
-  if (error) {
-    throw new Error('An error occurred while fetching posts')
-  }
-
-  if (!data) {
-    return null
-  }
-
+type ListProps = {
+  posts: PostWithAuthorAndLikedStatus[]
+} & ComponentPropsWithoutRef<'div'>
+export const List: FC<ListProps> = ({ posts, ...props }) => {
   return (
     <div
       style={{
@@ -33,13 +25,9 @@ export const LikedList: FC<ListProps> = ({ ...props }) => {
       }}
       {...props}
     >
-      {data.map((post) => {
-        return (
-          <Card key={post.id} title={post.author.name ?? ''}>
-            {post.content}
-          </Card>
-        )
-      })}
+      {posts.map((post) => (
+        <Card key={post.id} post={post} />
+      ))}
     </div>
   )
 }

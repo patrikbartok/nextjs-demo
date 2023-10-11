@@ -25,6 +25,7 @@ export const postsRelations = relations(posts, ({ one }) => ({
 }))
 export type Post = InferSelectModel<typeof posts>
 export type PostWithAuthor = Post & { author: User }
+export type PostWithAuthorAndLikedStatus = PostWithAuthor & { liked: boolean }
 
 export const likes = pgTable(
   'likes',

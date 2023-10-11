@@ -7,7 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const { userId, postId } = req.body
       await db.insert(seenPosts).values({ userId, postId })
-      res.status(200).json({ message: 'Like added successfully' })
+      res.status(200).json({ message: 'Seen added successfully' })
     } catch (error: any) {
       res.status(500).json({ message: error.message })
     }

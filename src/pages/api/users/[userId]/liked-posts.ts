@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '~/db'
-import { likes, Post } from '~/db/schema'
+import { likes, PostWithAuthorAndLikedStatus } from '~/db/schema'
 
-export default async (req: NextApiRequest, res: NextApiResponse<Post[]>) => {
+export default async (req: NextApiRequest, res: NextApiResponse<PostWithAuthorAndLikedStatus[]>) => {
   const { userId } = req.query || 0
 
   const userIdNum = Number(userId)
@@ -23,7 +23,10 @@ export default async (req: NextApiRequest, res: NextApiResponse<Post[]>) => {
     throw new Error('User likes query failed')
   }
 
-  const posts = userLikes.map((like) => like.post)
+  const posts = userLikes.map((like) => ({
+    ...like.post,
+    liked: true
+  }))
 
   res.json(posts)
 }

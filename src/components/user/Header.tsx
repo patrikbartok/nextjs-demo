@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, FC } from 'react'
 import { gray } from '~/designSystem'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useLoggedUser } from '~/components/posts/api/getLoggedUser'
+import { useLoggedUser } from '~/components/user/api/get-logged-user'
 
 type HeaderProps = ComponentPropsWithoutRef<'div'>
 export const Header: FC<HeaderProps> = ({ ...props }) => {
@@ -64,7 +64,7 @@ export const Header: FC<HeaderProps> = ({ ...props }) => {
               onMouseOver={(e) => (e.currentTarget.style.background = gray[500])}
               onMouseOut={(e) => (e.currentTarget.style.background = gray[600])}
             >
-              Favorites
+              Favourites
             </div>
           </Link>
         </div>
