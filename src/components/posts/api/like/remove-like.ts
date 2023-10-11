@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Like, PostWithAuthorAndLikedStatus } from '~/db/schema'
 import { listedPostsQueryKey } from '../get-listed-posts'
+import { useRouter } from 'next/router'
 
 export const removeLike = (like: Like): Promise<Response> => {
   return fetch('/api/remove-like', {
@@ -22,6 +23,7 @@ export const removeLike = (like: Like): Promise<Response> => {
 
 export const useRemoveLike = () => {
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   return useMutation({
     onMutate: async (newLike: Like) => {
@@ -49,7 +51,9 @@ export const useRemoveLike = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(listedPostsQueryKey) //so it disappears when removing like on favourites page
+      if (router.pathname === '/liked-posts') {
+        queryClient.invalidateQueries(listedPostsQueryKey) //so it disappears when removing like on favourites page
+      }
     },
     mutationFn: removeLike
   })

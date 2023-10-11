@@ -44,7 +44,6 @@ export const useAddLike = () => {
       return { previousListedPosts }
     },
     onError: (_, __, context: any) => {
-      console.log('error')
       if (context?.previousListedPosts) {
         queryClient.setQueryData(listedPostsQueryKey, context.previousListedPosts)
       }
