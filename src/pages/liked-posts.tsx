@@ -1,13 +1,13 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { NextPageWithLayout } from '~/pages/_app'
 import { ReactElement } from 'react'
-import { Header } from '~/components/user/Header'
 import { List } from '~/components/posts/List'
 import { prefetchListedPostsQuery, useListedPosts } from '~/components/posts/api/get-listed-posts'
 import { prefetchLoggedUser } from '~/components/user/api/get-logged-user'
 import { Like, PostWithStatusInfo } from '~/db/schema'
 import { loggedUserId } from '~/config'
 import { useRemoveLikedPost } from '~/components/posts/api/mutations/remove-liked-post'
+import PostsLayout from '~/components/PostsLayout'
 
 export async function getServerSideProps() {
   let queryClient = new QueryClient()
@@ -52,10 +52,9 @@ const LikedPosts: NextPageWithLayout = () => {
 
 LikedPosts.getLayout = function getLayout(page: ReactElement) {
   return (
-    <>
-      <Header />
+    <PostsLayout title='Liked posts' metadata='A list of the logged in users liked posts'>
       {page}
-    </>
+    </PostsLayout>
   )
 }
 

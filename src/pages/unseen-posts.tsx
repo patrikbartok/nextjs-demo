@@ -2,7 +2,6 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { List } from '~/components/posts/List'
 import { NextPageWithLayout } from '~/pages/_app'
 import { ReactElement } from 'react'
-import { Header } from '~/components/user/Header'
 import { prefetchListedPostsQuery, useListedPosts } from '~/components/posts/api/get-listed-posts'
 import { prefetchLoggedUser } from '~/components/user/api/get-logged-user'
 import { Like, PostWithStatusInfo } from '~/db/schema'
@@ -10,6 +9,7 @@ import { loggedUserId } from '~/config'
 import { useAddLike } from '~/components/posts/api/mutations/add-like'
 import { useRemoveLike } from '~/components/posts/api/mutations/remove-like'
 import { useAddSeen } from '~/components/posts/api/mutations/add-seen'
+import PostsLayout from '~/components/PostsLayout'
 
 export async function getServerSideProps() {
   let queryClient = new QueryClient()
@@ -58,14 +58,19 @@ const UnseenPosts: NextPageWithLayout = () => {
     return null
   }
 
-  return <List posts={unseenPosts} handleLike={handleLike} markSeen={markSeen} />
+  return (
+    <div>
+      <List posts={unseenPosts} handleLike={handleLike} markSeen={markSeen} />
+    </div>
+  )
 }
 
 UnseenPosts.getLayout = function getLayout(page: ReactElement) {
   return (
     <>
-      <Header />
-      {page}
+      <PostsLayout title='Unseen posts' metadata='A list of posts that the logged in user hasnt seen yet'>
+        {page}
+      </PostsLayout>
     </>
   )
 }
