@@ -66,6 +66,11 @@ docker compose up -d
 - On POST error: Undo the modifications on the cache
 - This is called Optimistic Updates, it gives a very smooth user experience
 
+### Component Structure and Logic Flow
+- Dumb components - most of the styled components
+- Smart components - only the pages basically, every logic for the page is put together there
+- Bubbling up events from dumb components to smart (page)
+
 ### Further optimizing possibilites
 - Instead of using getServerSideProps (Server Side Rendering), use Incremental Static Regeneration
 - ISR: getStaticProps with revalidate (interval) or manual revalidation
@@ -74,4 +79,4 @@ docker compose up -d
 
 ### Missing TODO
 - Pagination
-
+- Tests
