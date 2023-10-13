@@ -9,6 +9,7 @@ import { loggedUserId } from '~/config'
 import { useRemoveLikedPost } from '~/components/posts/api/mutations/remove-liked-post'
 import PostsLayout from '~/components/PostsLayout'
 import { Card } from '~/components/posts/Card'
+import { EmptyCard } from '~/components/posts/EmptyCard'
 
 export async function getServerSideProps() {
   let queryClient = new QueryClient()
@@ -50,9 +51,11 @@ const LikedPosts: NextPageWithLayout = () => {
 
   return (
     <List>
-      {likedPosts.map((post) => (
-        <Card key={post.id} post={post} handleLike={handleLike} markSeen={markSeen} />
-      ))}
+      {likedPosts.length === 0 ? (
+        <EmptyCard message={'You do not have any liked posts =('} />
+      ) : (
+        likedPosts.map((post) => <Card key={post.id} post={post} handleLike={handleLike} markSeen={markSeen} />)
+      )}
     </List>
   )
 }

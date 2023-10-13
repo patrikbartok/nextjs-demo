@@ -11,6 +11,7 @@ import { useRemoveLike } from '~/components/posts/api/mutations/remove-like'
 import { useAddSeen } from '~/components/posts/api/mutations/add-seen'
 import PostsLayout from '~/components/PostsLayout'
 import { Card } from '~/components/posts/Card'
+import { EmptyCard } from '~/components/posts/EmptyCard'
 
 export async function getServerSideProps() {
   let queryClient = new QueryClient()
@@ -61,9 +62,11 @@ const UnseenPosts: NextPageWithLayout = () => {
 
   return (
     <List>
-      {unseenPosts.map((post) => (
-        <Card key={post.id} post={post} handleLike={handleLike} markSeen={markSeen} />
-      ))}
+      {unseenPosts.length === 0 ? (
+        <EmptyCard message={'You have seen all the posts =)'} />
+      ) : (
+        unseenPosts.map((post) => <Card key={post.id} post={post} handleLike={handleLike} markSeen={markSeen} />)
+      )}
     </List>
   )
 }
