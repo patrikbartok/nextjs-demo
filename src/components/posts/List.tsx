@@ -1,14 +1,10 @@
-import { ComponentPropsWithoutRef, FC } from 'react'
+import { ComponentPropsWithoutRef, FC, ReactNode } from 'react'
 import { gray } from '~/designSystem'
-import { Card } from '~/components/posts/Card'
-import { PostWithStatusInfo } from '~/db/schema'
 
 type ListProps = {
-  posts: PostWithStatusInfo[]
-  handleLike: (post: PostWithStatusInfo) => void
-  markSeen: (post: PostWithStatusInfo) => void
+  children: ReactNode
 } & ComponentPropsWithoutRef<'div'>
-export const List: FC<ListProps> = ({ posts, handleLike, markSeen, ...props }) => {
+export const List: FC<ListProps> = ({ children, ...props }) => {
   return (
     <div
       style={{
@@ -27,9 +23,7 @@ export const List: FC<ListProps> = ({ posts, handleLike, markSeen, ...props }) =
       }}
       {...props}
     >
-      {posts.map((post) => (
-        <Card key={post.id} post={post} handleLike={handleLike} markSeen={markSeen} />
-      ))}
+      {children}
     </div>
   )
 }

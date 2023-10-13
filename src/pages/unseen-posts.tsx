@@ -10,6 +10,7 @@ import { useAddLike } from '~/components/posts/api/mutations/add-like'
 import { useRemoveLike } from '~/components/posts/api/mutations/remove-like'
 import { useAddSeen } from '~/components/posts/api/mutations/add-seen'
 import PostsLayout from '~/components/PostsLayout'
+import { Card } from '~/components/posts/Card'
 
 export async function getServerSideProps() {
   let queryClient = new QueryClient()
@@ -59,9 +60,11 @@ const UnseenPosts: NextPageWithLayout = () => {
   }
 
   return (
-    <div>
-      <List posts={unseenPosts} handleLike={handleLike} markSeen={markSeen} />
-    </div>
+    <List>
+      {unseenPosts.map((post) => (
+        <Card key={post.id} post={post} handleLike={handleLike} markSeen={markSeen} />
+      ))}
+    </List>
   )
 }
 

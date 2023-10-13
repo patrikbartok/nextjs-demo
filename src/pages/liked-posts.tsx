@@ -8,6 +8,7 @@ import { Like, PostWithStatusInfo } from '~/db/schema'
 import { loggedUserId } from '~/config'
 import { useRemoveLikedPost } from '~/components/posts/api/mutations/remove-liked-post'
 import PostsLayout from '~/components/PostsLayout'
+import { Card } from '~/components/posts/Card'
 
 export async function getServerSideProps() {
   let queryClient = new QueryClient()
@@ -47,7 +48,13 @@ const LikedPosts: NextPageWithLayout = () => {
     return null
   }
 
-  return <List posts={likedPosts} markSeen={markSeen} handleLike={handleLike} />
+  return (
+    <List>
+      {likedPosts.map((post) => (
+        <Card key={post.id} post={post} handleLike={handleLike} markSeen={markSeen} />
+      ))}
+    </List>
+  )
 }
 
 LikedPosts.getLayout = function getLayout(page: ReactElement) {
