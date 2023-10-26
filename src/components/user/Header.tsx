@@ -31,7 +31,7 @@ export const Header: FC<HeaderProps> = ({ ...props }) => {
           margin: '0 auto'
         }}
       >
-        <h1 style={{ color: gray[200], fontSize: 24, textAlign: 'left', margin: 0 }}>ICF Social</h1>
+        <h1 style={{ color: gray[200], fontSize: 24, textAlign: 'left', margin: 0 }}>NextJS Demo</h1>
         <div style={{ display: 'flex', gap: '10px', flexGrow: 1, justifyContent: 'left' }}>
           <Link href='/unseen-posts' style={{ textDecoration: 'none' }}>
             <div
