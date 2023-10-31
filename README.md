@@ -20,8 +20,8 @@ docker compose up -d
 (Only lang tags are missing for Accessibility)
 
 ### Production build
-- Added a "production" script in package.json next to "dev"
-- Calling this in the Dockerfile instead
+- There is a "production" script in package.json next to "dev"
+- Calling this in the Dockerfile instead to run in production
 - Builds a production build on docker and starts it
 - to change between build modes: Switch the last word in the Dockerfile between dev and production
 
